@@ -13,15 +13,15 @@ jobs:
         id: trigger
         run: |
           echo "Refreshing calendar..."
-          RESPONSE=$(curl -s -o /dev/null -w "%{http_code}" -X POST "https://api.render.com/deploy/srv-d3uugpjipnbc73985lg0?key=9R9dJBwVqhQ")
+          RESPONSE=$(curl -s -o /dev/null -w "%{http_code}" -X POST "https://api.render.com/deploy/srv-d3uugpjipnbc73985lg0?key=${{ secrets.RENDER_API_KEY }}")
           echo "HTTP response code: $RESPONSE"
 
           if [ "$RESPONSE" -ge 200 ] && [ "$RESPONSE" -lt 300 ]; then
             echo "Calendar refresh successful ✅"
-            echo "::set-output name=status::success"
+            echo "status=success" >> $GITHUB_OUTPUT
           else
             echo "Calendar refresh failed ❌"
-            echo "::set-output name=status::failure"
+            echo "status=failure" >> $GITHUB_OUTPUT
             exit 1
           fi
 
